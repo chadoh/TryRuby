@@ -14,10 +14,10 @@ When you come out the other side, you'll likely find that
 1. Your computer understands what you're saying! And you don't have much
    trouble speaking its dialect.
 2. You have some skill in climbing about on your computer's [command
-   line](http://en.wikipedia.org/wiki/Command_line_interface)
+   line](http://en.wikipedia.org/wiki/Command_line_interface).
 
 It was originally made by a fellow named [_why][1]. But he disappeared. So
-some other folks have rebuilt it.
+some other folks have rebuilt it. (See the license for details.)
 
 You can help!
 =============
@@ -32,13 +32,13 @@ implementation that wasn't able to be recovered from archive.org
 is the /irb file (or /irb.cgi currently, you can change the name
 of the file used in js/irb.js). This script should:
 
-- Take one GET param "cmd", which will contain a single line of
-Ruby to run. It can also be "!INIT!IRB", which is called at the
+- Take one GET param `cmd`, which will contain a single line of
+Ruby to run. It can also be `!INIT!IRB`, which is called at the
 start of the session. The current implementation of irb.cgi
-ignores this. "reset" should also do something special (but
+ignores this. `reset` should also do something special (but
 doesn't at the moment).
 - Return the output, optionally formatted using normal shell
-escapes (eg "\033[1;33mThis appears orange")
+escapes (eg `\033[1;33mThis appears orange`)
 
 The output has four main formats for returning a result, error
 output, javascript function and line continuation. This is used
@@ -46,28 +46,30 @@ by the help system so that it can detect when a user has entered
 the next step for the tutorial.
 
 Output results should be formatted with a "=> " at the front of
-the output. For example: /irb.cgi?cmd=3*4 should output "=> 12".
+the output. For example: `/irb.cgi?cmd=3*4` should output `=> 12`.
 Shell escape codes can be used to give the output different colors,
-for example "=> \033[1;20m12". This will automatically be removed
+for example `=> \033[1;20m12`. This will automatically be removed
 when used with the help system. Note that you don't and shouldn't
-terminate these shell escapes with \033[m (like with a normal shell).
+terminate these shell escapes with `\033[m` (like with a normal shell).
 
-Standard output should not be prefixed by =>, so /irb.cgi?cmd=puts(44)
-should output "44\n=> nil". Here 44 is output, and nil is returned.
+Standard output should not be prefixed by '=>', so `/irb.cgi?cmd=puts(44)`
+should output `44\n=> nil`. Here 44 is output, and nil is returned.
 Again shell escapes can be used.
 
-Errors should be formated just like standard output, however it should
-have no return. For example, /irb.cgi?cmd=non_existant_function should
-output something like "\033[1;33mNameError: undefined local variable or
-method `non_existant_function' for main:Object".
+Errors should be formated just like standard output, but should
+have no return. For example, `/irb.cgi?cmd=non_existant_function` should
+output something like
 
-Javascript functions (such as Popup.goto) should use the format
-"\033[1;JsmJAVASCRIPT CODE\033[m". The javascript cod will then be run.
-For example, /irb.cgi?cmd=Popup.goto("http://www.google.com") should
-output \033[1;JSmwindow.irb.options.popup_goto("http://www.google.com")\033[m.
+    \033[1;33mNameError: undefined local variable or method
+    `non_existant_function' for main:Object".
 
-Finally, if the command isn't finished (eg "def myfunc"), then ".."
-should be returned. Eg /irb.cgi?cmd=def%20myfunc should return "..".
+Javascript functions (such as `Popup.goto`) should use the format
+`\033[1;JsmJAVASCRIPT CODE\033[m`. The javascript code will then be run.
+For example, `/irb.cgi?cmd=Popup.goto("http://www.google.com")` should
+output `\033[1;JSmwindow.irb.options.popup_goto("http://www.google.com")\033[m`.
+
+Finally, if the command isn't finished (eg `def myfunc`), then ".."
+should be returned. Eg `/irb.cgi?cmd=def%20myfunc` should return "..".
 
 
 How this works with the help system
